@@ -1,0 +1,1231 @@
+<!-- Copyright © 2017, Xerxes Langerudi. All rights reserved. -->
+
+<!doctype html>
+
+<html>
+<head>
+	<title>Reinvent</title>
+</head>
+
+<style>
+
+html, body
+{
+	text-align: left;
+	color: white;
+	height: 95%;
+}
+
+.canvas
+{
+	float: right;
+}
+
+#menu
+{
+	width: 276px;
+	height: 100%;
+	font: 16px Verdana;
+	float: left;
+	background-color: white;
+}
+
+.header
+{
+	width: 276px;
+	height: 50px;
+	font-size: 25px;
+	color: grey;
+}
+
+.itemDescription
+{
+	width: 276px;
+	float: left;
+	color: grey;
+}
+
+.itemHolder
+{
+	width: 276px;
+	float: left;
+}
+
+select
+{
+	width: 140px;
+	border: 2px solid turquoise;
+	color: grey;
+}
+
+</style>
+
+<body>
+	<div id="menu">
+		<form>
+			<div class="header">
+				Reinvent
+			</div>
+
+			<div class="itemDescription" id="itemDescription1">
+				Tire color:
+			</div>
+			<div class="itemHolder" id="itemHolder1">
+				<select name="tireColor" id="tireColor">
+					<option value="cyan">Cyan</option>
+					<option value="turquoise">Turquoise</option>
+					<option value="blue">Blue</option>
+					<option value="darkblue">Darkblue</option>
+					<option value="pink">Pink</option>
+					<option value="fuchsia">Fuchsia</option>
+					<option value="lightblue">Lightblue</option>
+					<option selected="" value="black">Black</option>
+					<option value="grey">Grey</option>
+					<option value="purple">Purple</option>
+					<option value="gold">Gold</option>
+					<option value="orange">Orange</option>
+					<option value="red">Red</option>
+					<option value="darkred">Darkred</option>
+				</select>
+			</div>
+
+			<div class="itemDescription" id="itemDescription2">
+				Wheel color:
+			</div>
+			<div class="itemHolder" id="itemHolder2">
+				<select name="wheelColor" id="wheelColor">
+					<option value="cyan">Cyan</option>
+					<option value="turquoise">Turquoise</option>
+					<option value="blue">Blue</option>
+					<option value="darkblue">Darkblue</option>
+					<option value="pink">Pink</option>
+					<option value="fuchsia">Fuchsia</option>
+					<option value="lightblue">Lightblue</option>
+					<option value="black">Black</option>
+					<option selected="" value="grey">Grey</option>
+					<option value="purple">Purple</option>
+					<option value="gold">Gold</option>
+					<option value="orange">Orange</option>
+					<option value="red">Red</option>
+					<option value="darkred">Darkred</option>
+				</select>
+			</div>
+
+			<div class="itemDescription" id="itemDescription3">
+				Tire height: 
+			</div>
+			<div class="itemHolder" id="itemHolder3">
+				<select name="tireHeight" id="tireHeight">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option selected="" value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+					<option value="13">13</option>
+					<option value="14">14</option>
+					<option value="15">15</option>
+					<option value="16">16</option>
+					<option value="17">17</option>
+					<option value="18">18</option>
+					<option value="19">19</option>
+					<option value="20">20</option>
+					<option value="21">21</option>
+					<option value="22">22</option>
+					<option value="23">23</option>
+					<option value="24">24</option>
+					<option value="25">25</option>
+					<option value="26">26</option>
+					<option value="27">27</option>
+					<option value="28">28</option>
+					<option value="29">29</option>
+					<option value="30">30</option>
+				</select>
+			</div>
+
+			<div class="itemDescription" id="itemDescription4">
+				Wheel radius: 
+			</div>
+			<div class="itemHolder" id="itemHolder4">
+				<select name="wheelRadius" id="wheelRadius">
+					<option value="0.1">10</option>
+					<option value="0.2">20</option>
+					<option value="0.3">30</option>
+					<option value="0.4">40</option>
+					<option value="0.5">50</option>
+					<option value="0.6">60</option>
+					<option value="0.7">70</option>
+					<option value="0.8">80</option>
+					<option value="0.9">90</option>
+					<option selected="" value="1">100</option>
+				</select>
+			</div>
+
+			<div class="itemDescription" id="itemDescription5">
+				Wheel type: 
+			</div>
+			<div class="itemHolder" id="itemHolder5">
+				<select name="wheelType" id="wheelType">
+					<option value="Sheet">Sheet</option>
+					<option value="Strings">Strings</option>
+					<option selected="" value="X">X</option>
+					<option value="Y">Y</option>
+				</select>
+			</div>
+
+			<div class="itemDescription" id="itemDescription6">
+				Tire type: 
+			</div>
+			<div class="itemHolder" id="itemHolder6">
+				<select name="tireType" id="tireType">
+					<option value="Flat">Flat</option>
+					<option selected="" value="Offroad">Offroad</option>
+				</select>
+			</div>
+
+		</form>
+	</div>
+
+<canvas width="970" height="650" class="canvas" id="canvas"></canvas>
+
+<script type="text/javascript">
+
+// Tire
+var tireColor;
+
+// Wheel
+var wheelColor;
+
+// Menu
+var menuBackgroundColor;
+var menuHeaderColor;
+var menuItemDescriptionColor;
+var menuItemOptionColor;
+var menuItemOptionBorderColor;
+
+var canvas = document.querySelector("#canvas");
+var cx = canvas.getContext("2d");
+
+canvas.width = screen.width > 1667? 1266 : screen.width - 401;
+
+var bigENOUGH = true;
+
+if (screen.width < 1041)
+{
+	alert("This App works only on screens with a width larger than 1041px.");
+
+	bigENOUGH = false;
+
+	var menu = document.querySelector("#menu");
+
+	menu.style.display = "none";
+}
+else if (screen.width < 1366)
+{
+	alert("This App works best on screens with a larger size.");
+}
+
+myCanvasX = canvas.width;
+myCanvasY = canvas.height;
+
+function setColor(color)
+{
+	switch(color)
+	{
+		case "Cool":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "cyan";
+			break;
+		case "Cooler":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "turquoise";
+			break;
+		case "Wet":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "blue";
+			break;
+		case "Wetter":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "darkblue";
+			menuItemDescriptionColor = "darkblue";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "grey";
+			break;
+		case "Hot":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "pink";
+			break;
+		case "Hotter":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "fuchsia";
+			break;
+		case "Bright":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "lightblue";
+			menuItemDescriptionColor = "lightblue";
+			menuItemOptionColor = "lightblue";
+			menuItemOptionBorderColor = "lavender";
+			break;
+		case "Dark":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "grey";
+			menuItemDescriptionColor = "grey";
+			menuItemOptionColor = "grey";
+			menuItemOptionBorderColor = "black";
+			break;
+		case "Tasty":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "purple";
+			menuItemDescriptionColor = "purple";
+			menuItemOptionColor = "purple";
+			menuItemOptionBorderColor = "fuchsia";
+			break;
+		case "Gold":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "red";
+			menuItemDescriptionColor = "red";
+			menuItemOptionColor = "red";
+			menuItemOptionBorderColor = "gold";
+			break;
+		case "Orange":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "darkblue";
+			menuItemDescriptionColor = "darkblue";
+			menuItemOptionColor = "darkblue";
+			menuItemOptionBorderColor = "Orange";
+			break;
+		case "Liquid":
+			menuBackgroundColor = "white";
+			menuHeaderColor = "#035075";
+			menuItemDescriptionColor = "#035075";
+			menuItemOptionColor = "#035075";
+			menuItemOptionBorderColor = "#107095";
+			break;
+	}
+}
+
+function changeMenuColors()
+{
+	// Menu background color
+	var menu = document.querySelector("#menu");
+
+	menu.style.backgroundColor = "white";
+
+	// Menu header color
+	var menuHeader = document.querySelector(".header");
+
+	menuHeader.style.color = menuHeaderColor;
+
+	// Menu item description color
+	for (var i = 1; i < 5; i++)
+	{
+		var menuItemDescription = document.querySelector("#itemDescription" + i);
+
+		menuItemDescription.style.color = menuItemDescriptionColor;
+	}
+
+	// Menu item option color
+	var width = document.querySelector("#tireColor");
+
+	width.style.color = menuItemOptionColor;
+
+	width.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	// Menu item option color
+	var width = document.querySelector("#wheelColor");
+
+	width.style.color = menuItemOptionColor;
+
+	width.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	// Menu item option color
+	var width = document.querySelector("#tireHeight");
+
+	width.style.color = menuItemOptionColor;
+
+	width.style.border = "2px solid " + menuItemOptionBorderColor;
+
+	// Menu item option color
+	var width = document.querySelector("#wheelRadius");
+
+	width.style.color = menuItemOptionColor;
+
+	width.style.border = "2px solid " + menuItemOptionBorderColor;
+
+}
+
+var speed = 0;
+
+var flatTire = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+
+draw: function(inX, inY, radius, height, size)
+{
+	radius += height * size;
+
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	cx.fillRect(	inX - radius * size,
+			inY - radius * size,
+			this.endX,
+			this.endY);
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Tire
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = tireColor;
+	cx.fill();
+}
+}
+
+var offroadTire = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+gradient: 0,
+gradientStep: 0.1,
+draw: function(inX, inY, radius, height, size)
+{
+	radius = radius * size + height * size * 2;
+
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	cx.fillRect(	inX - radius * size,
+			inY - radius * size,
+			this.endX,
+			this.endY);
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Tire
+	cx.beginPath();
+
+	cx.arc(this.x, this.y, radius - height * size * 2 * 0.05, 0, 7);
+
+	cx.fillStyle = tireColor;
+	cx.fill();
+
+	this.gradientStep = speed * 0.08;
+
+	cx.strokeStyle = tireColor;
+
+	cx.lineWidth = radius / 10;
+
+	var i = 0;
+
+	var toothNumber = 40;
+
+	var toothDistance = Math.PI * 2 / toothNumber;
+
+	var myGradient = this.gradient;
+
+	cx.beginPath();
+
+	for (i = 0; i < toothNumber; i++)
+	{
+		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1, inY + Math.sin(myGradient) * radius * 0.1);
+		cx.lineTo(inX - Math.cos(myGradient) * radius, inY + Math.sin(myGradient) * radius);
+
+		myGradient += toothDistance;
+	}
+
+	cx.stroke();
+
+	this.gradient += this.gradientStep;
+}
+}
+
+var sheetWheel = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+haveTire: 1,
+draw: function(inX, inY, radius, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	if (!this.haveTire)
+	{
+		cx.fillRect(	inX - radius * 2,
+				inY - radius * 2,
+				this.endX,
+				this.endY);
+	}
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Wheel
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = wheelColor;
+	cx.fill();
+}
+}
+
+var stringWheel = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+haveTire: 1,
+gradient: 0,
+gradientStep: 0.1,
+drawStrings: function(inX, inY, radius, stringNumber, size)
+{
+	this.gradientStep = speed * 0.08;
+
+	// Wow, this function was written without even a single bug: 2017-5-4 02:59:20 PM IRDT
+	cx.beginPath();
+
+	var i = 0;
+
+	var stringNumber = radius / 2;
+
+	var stringDistance = Math.PI * 2 / stringNumber;
+
+	var myGradient = this.gradient;
+
+	for (i = 0; i < stringNumber; i++)
+	{
+		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+
+		myGradient += stringDistance;
+	}
+
+	cx.stroke();
+},
+draw: function(inX, inY, radius, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	if (!this.haveTire)
+	{
+		cx.fillRect(	inX - radius * 2,
+				inY - radius * 2,
+				this.endX,
+				this.endY);
+	}
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Wheel
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = "white";
+	cx.strokeStyle = wheelColor;
+	cx.fill();
+
+	cx.fillStyle = wheelColor;
+	cx.moveTo(inX - Math.cos(this.gradient) * radius * 0.1 * size, inY + Math.sin(this.gradient) * radius * 0.1 * size);
+	cx.lineTo(inX - Math.cos(this.gradient) * radius * size, inY + Math.sin(this.gradient) * radius * size);
+	cx.stroke();
+
+	this.drawStrings(inX, inY, radius, 30, size);
+
+	this.gradient += this.gradientStep;
+}
+}
+
+var xWheel = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+haveTire: 1,
+gradient: 0,
+gradientStep: 0.1,
+drawX: function(inX, inY, radius, size)
+{
+	this.gradientStep = speed * 0.08;
+
+	cx.beginPath();
+
+	var i = 0;
+
+	var stringDistance = Math.PI * 2 / 4;
+
+	var myGradient = this.gradient;
+
+	for (i = 0; i < 4; i++)
+	{
+		cx.lineWidth = radius / 2;
+		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+
+		myGradient += stringDistance;
+	}
+
+	cx.stroke();
+},
+draw: function(inX, inY, radius, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	if (!this.haveTire)
+	{
+		cx.fillRect(	inX - radius * 2,
+				inY - radius * 2,
+				this.endX,
+				this.endY);
+	}
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Wheel
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = "white";
+	cx.strokeStyle = wheelColor;
+	cx.fill();
+
+	cx.fillStyle = wheelColor;
+	cx.moveTo(inX - Math.cos(this.gradient) * radius * 0.1 * size, inY + Math.sin(this.gradient) * radius * 0.1 * size);
+	cx.lineTo(inX - Math.cos(this.gradient) * radius * size, inY + Math.sin(this.gradient) * radius * size);
+	cx.stroke();
+
+	this.drawX(inX, inY, radius, size);
+
+	this.gradient += this.gradientStep;
+}
+}
+
+var yWheel = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+haveTire: 1,
+gradient: 0,
+gradientStep: 0.1,
+drawY: function(inX, inY, radius, size)
+{
+	this.gradientStep = speed * 0.08;
+
+	cx.beginPath();
+
+	var i = 0;
+
+	var stringDistance = Math.PI * 2 / 3;
+
+	var myGradient = this.gradient;
+
+	for (i = 0; i < 3; i++)
+	{
+		cx.lineWidth = radius / 2;
+		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+
+		myGradient += stringDistance;
+	}
+
+	cx.stroke();
+},
+draw: function(inX, inY, radius, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	if (!this.haveTire)
+	{
+		cx.fillRect(	inX - radius * 2,
+				inY - radius * 2,
+				this.endX,
+				this.endY);
+	}
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Wheel
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = "white";
+	cx.strokeStyle = wheelColor;
+	cx.fill();
+
+	cx.fillStyle = wheelColor;
+	cx.moveTo(inX - Math.cos(this.gradient) * radius * 0.1 * size, inY + Math.sin(this.gradient) * radius * 0.1 * size);
+	cx.lineTo(inX - Math.cos(this.gradient) * radius * size, inY + Math.sin(this.gradient) * radius * size);
+	cx.stroke();
+
+	this.drawY(inX, inY, radius, size);
+
+	this.gradient += this.gradientStep;
+}
+}
+
+var initialized = false;
+var paceshift;
+var indicateMAXSpeed = 0;
+
+var steeringWheel = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+haveTire: 1,
+gradient: 0,
+gradientStep: 0.1,
+drawX: function(inX, inY, radius, size)
+{
+	cx.beginPath();
+
+	cx.font = radius * size * 0.15 + "px Verdana";
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(inX + radius * size * 0.25, inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
+
+	cx.fillStyle = "white";
+	cx.fillText("Speed", inX + radius * size * 0.25, inY + radius * size * 0.1);
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(inX - (radius * size * 0.25) * 3, inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
+
+	cx.fillStyle = "white";
+	cx.fillText("Brake", inX - (radius * size * 0.25) * 3, inY + radius * size * 0.1);
+
+	var i = 0;
+
+	var stringDistance = Math.PI * 2 / 4;
+
+	var myGradient = this.gradient - Math.PI * 0.25;
+
+	for (i = 0; i < 4; i++)
+	{
+		cx.lineWidth = radius / 4 * size;
+		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+
+		myGradient += stringDistance;
+	}
+
+	cx.stroke();
+
+	if (!initialized)
+	{
+		initialized = true;
+
+		cx.canvas.addEventListener("mousedown", function(event)
+		{
+			clearInterval(paceshift);
+
+			var rect = this.getBoundingClientRect();
+
+			paceshift = setInterval(function()
+			{
+				clickX = event.clientX - rect.left;
+				clickY = event.clientY - rect.top;
+
+				if ((clickX > inX + radius * size * 0.25 && clickX < inX + radius * size * 0.25 + radius * size * 0.5 && (clickY > inY - radius * size * 0.1) && clickY < inY - radius * size * 0.1 + radius * size * 0.25))
+				{
+					if (speed < 6)
+					{
+						speed += (Math.pow(6, 1.02) - speed) / 60;
+					}
+					else
+					{
+						indicateMAXSpeed = 500;
+
+						clearInterval(paceshift);
+					}
+				}
+
+				if ((clickX > inX - (radius * size * 0.25) * 3 && clickX <inX - (radius * size * 0.25) * 3 + radius * size * 0.5 && (clickY > inY - radius * size * 0.1) && clickY < inY - radius * size * 0.1 + radius * size * 0.25))
+				{
+					if (speed > 0.4)
+					{
+						speed -= (Math.pow(6, 1.02) - speed) / 20;
+					}
+					else
+					{
+						speed = 0;
+
+						clearInterval(paceshift);
+					}
+				}
+			}, 40);
+		});
+
+		cx.canvas.addEventListener("mouseup", function()
+		{
+			clearInterval(paceshift);
+		});
+	}
+
+},
+draw: function(inX, inY, radius, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+	if (!this.haveTire)
+	{
+		cx.fillRect(	inX - radius * 2,
+				inY - radius * 2,
+				this.endX,
+				this.endY);
+	}
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Wheel
+	cx.beginPath();
+	cx.lineWidth = radius / 4 * size;
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = "white";
+	cx.strokeStyle = wheelColor;
+
+	cx.stroke();
+
+	this.drawX(inX, inY, radius, size);
+
+//	this.gradient += this.gradientStep;
+}
+}
+
+var speedometer = {
+x: 0,
+y: 0,
+inXPrevious: 0,
+inYPrevious: 0,
+endX: 0,
+endY: 0,
+radius: 0,
+movement: 0,
+haveTire: 1,
+gradient: 0,
+gradientStep: 0.1,
+drawX: function(inX, inY, radius, size)
+{
+	cx.beginPath();
+
+	cx.font = radius * size * 0.1 + "px Verdana";
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(inX - (radius * size * 0.8), inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
+
+	cx.fillStyle = "white";
+	cx.fillText("100 KM/H", inX - (radius * size * 0.8), inY + radius * size * 0.1);
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(inX - (radius * size * 0.25), inY - radius * size * 0.75, radius * size * 0.5, radius * size * 0.25);
+
+	cx.fillStyle = "white";
+	cx.fillText("200 KM/H", inX - (radius * size * 0.25), inY - radius * size * 0.55);
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(inX + (radius * size * 0.3), inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
+
+	cx.fillStyle = "white";
+	cx.fillText("300 KM/H", inX + (radius * size * 0.3), inY + radius * size * 0.1);
+
+	cx.lineWidth = radius / 5;
+
+	var myGradient = (Math.PI / 2) - speed;
+
+	cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+	cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+
+	cx.stroke();
+},
+draw: function(inX, inY, radius, size)
+{
+	// Clear clouds
+	cx.fillStyle = "white";
+	cx.lineWidth = 2 * size;
+
+	// X: Rotor
+	// Y: Rotor
+	// endX: Empiric
+	// endY: Empiric
+	this.endX = radius * 2 * size;
+	this.endY = radius * 2 * size;
+
+//	if (!this.haveTire)
+	{
+		cx.fillRect(	inX - radius * size,
+				inY - radius * size,
+				this.endX,
+				this.endY);
+	}
+/*
+	cx.fillRect(	this.inXPrevious,
+			this.inYPrevious,
+			this.endX,
+			this.endY);
+*/
+	// When parameters change
+	if (this.inXPrevious != inX || this.inYPrevious != inY)
+	{
+		this.inXPrevious = inX;
+		this.inYPrevious = inY;
+	
+		this.x = inX;
+		this.y = inY;
+	}
+
+	// Wheel
+	cx.beginPath();
+	cx.lineWidth = radius / 4 * size;
+	cx.arc(this.x, this.y, radius * size, 0, 7);
+
+	cx.fillStyle = "white";
+	cx.strokeStyle = wheelColor;
+
+	cx.stroke();
+
+	this.drawX(inX, inY, radius, size);
+
+	this.gradient += this.gradientStep;
+}
+}
+
+var groundPatrol;
+var spin = false;
+
+function invent(x, y, wheelRadius, tireHeight, wheelType, tireType)
+{
+	cx.fillStyle = "white";
+
+	cx.fillRect(	0,
+			0,
+			myCanvasX,
+			myCanvasY);
+
+	setColor("Cooler");
+
+	changeMenuColors();
+
+	cx.strokeStyle = "black";
+	cx.fillStyle = "black";
+
+	// Might already be set
+	clearInterval(groundPatrol);
+
+	var mySteeringWheel = Object.create(steeringWheel);
+
+	mySteeringWheel.draw(850, 520, 50, 1.6);
+
+	var mySpeedometer = Object.create(speedometer);
+
+	mySpeedometer.draw(100, 520, 50, 1.6);
+
+	var myTire;
+
+	var myWheel;
+
+	switch (wheelType)
+	{
+		case "Sheet":
+		var myWheel = Object.create(sheetWheel);
+		break;
+		case "Strings":
+		var myWheel = Object.create(stringWheel);
+		break;
+		case "X":
+		myWheel = Object.create(xWheel);
+		break;	
+		case "Y":
+		myWheel = Object.create(yWheel);
+		break;
+	}
+
+	switch (tireType)
+	{
+		case "Flat":
+		var myTire = Object.create(flatTire);
+		break;
+		case "Offroad":
+		var myTire = Object.create(offroadTire);
+		break;
+	}
+
+	myTire.draw(x, y, wheelRadius, tireHeight, 1.6);
+
+	myWheel.draw(x, y, wheelRadius, 1.6);
+
+	spin = true;
+
+	if (spin)
+	{
+		// Patroling
+		groundPatrol = setInterval(function()
+		{
+			cx.fillStyle = "white";
+			cx.fillRect(0, 0, myCanvasX, myCanvasY);
+
+			if (indicateMAXSpeed)
+			{
+				cx.fillStyle = "darkred";
+
+				cx.font = 70 + "px Verdana";
+
+				if (indicateMAXSpeed % 2) { cx.fillText("MAX SPEED REACHED!", 30, 300); };
+
+				indicateMAXSpeed -= 1;
+			}
+			else
+			{
+				myTire.draw(x, y, wheelRadius, tireHeight, 1.6);
+
+				myWheel.draw(x, y, wheelRadius, 1.6);
+
+				mySpeedometer.draw(100, 520, 50, 1.6);
+
+				mySteeringWheel.draw(850, 520, 50, 1.6);
+			}
+
+		}, 10);
+	}
+	else
+	{
+		clearInterval(groundPatrol);
+	}
+}
+
+
+var form = document.querySelector("form");
+
+function draw()
+{
+	if (bigENOUGH)
+	{
+		tireColor = form.elements.tireColor.value;
+		wheelColor = form.elements.wheelColor.value;
+		var tireHeight = form.elements.tireHeight.value;
+		var wheelRadius = form.elements.wheelRadius.value;
+		var wheelType = form.elements.wheelType.value;
+		var tireType = form.elements.tireType.value;
+		
+		var x = myCanvasX / 2;
+		var y = myCanvasY / 2;
+
+		wheelRadius *= 100;
+
+		invent(x, y, wheelRadius, tireHeight, wheelType, tireType);
+	}
+}
+
+draw();
+
+form.addEventListener("change", draw);
+
+</script>
+
+</body>
+</html>
+
