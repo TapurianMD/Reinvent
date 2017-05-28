@@ -389,8 +389,6 @@ movement: 0,
 
 draw: function(inX, inY, radius, height, size)
 {
-	radius += height * size;
-
 	// Clear clouds
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
@@ -424,7 +422,7 @@ draw: function(inX, inY, radius, height, size)
 
 	// Tire
 	cx.beginPath();
-	cx.arc(this.x, this.y, radius * size, 0, 7);
+	cx.arc(this.x, this.y, radius * size + height * size, 0, 7);
 
 	cx.fillStyle = tireColor;
 	cx.fill();
@@ -444,8 +442,6 @@ gradient: 0,
 gradientStep: 0.1,
 draw: function(inX, inY, radius, height, size)
 {
-	radius = radius * size + height * size * 2;
-
 	// Clear clouds
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
@@ -480,16 +476,16 @@ draw: function(inX, inY, radius, height, size)
 	// Tire
 	cx.beginPath();
 
-	cx.arc(this.x, this.y, radius - height * size * 2 * 0.05, 0, 7);
+	cx.arc(this.x, this.y, radius * size + height * size * 0.9, 0, 7);
 
 	cx.fillStyle = tireColor;
 	cx.fill();
 
-	this.gradientStep = speed * 0.04;
+	this.gradientStep = speed * 0.08;
 
 	cx.strokeStyle = tireColor;
 
-	cx.lineWidth = radius / 10;
+	cx.lineWidth = Math.pow(radius, .7);
 
 	var i = 0;
 
@@ -503,8 +499,8 @@ draw: function(inX, inY, radius, height, size)
 
 	for (i = 0; i < toothNumber; i++)
 	{
-		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1, inY + Math.sin(myGradient) * radius * 0.1);
-		cx.lineTo(inX - Math.cos(myGradient) * radius, inY + Math.sin(myGradient) * radius);
+		cx.moveTo(inX - Math.cos(myGradient) * radius * size * 0.1, inY + Math.sin(myGradient) * radius * size * 0.1);
+		cx.lineTo(inX - Math.cos(myGradient) * (radius * size + height * size), inY + Math.sin(myGradient) * (radius * size + height * size));
 
 		myGradient += toothDistance;
 	}
@@ -584,7 +580,7 @@ gradient: 0,
 gradientStep: 0.1,
 drawStrings: function(inX, inY, radius, stringNumber, size)
 {
-	this.gradientStep = speed * 0.04;
+	this.gradientStep = speed * 0.08;
 
 	// Wow, this function was written without even a single bug: 2017-5-4 02:59:20 PM IRDT
 	cx.beginPath();
@@ -676,7 +672,7 @@ gradient: 0,
 gradientStep: 0.1,
 drawX: function(inX, inY, radius, size)
 {
-	this.gradientStep = speed * 0.04;
+	this.gradientStep = speed * 0.08;
 
 	cx.beginPath();
 
@@ -766,7 +762,7 @@ gradient: 0,
 gradientStep: 0.1,
 drawY: function(inX, inY, radius, size)
 {
-	this.gradientStep = speed * 0.04;
+	this.gradientStep = speed * 0.08;
 
 	cx.beginPath();
 
