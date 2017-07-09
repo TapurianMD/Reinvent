@@ -80,6 +80,7 @@ select
 					<option value="fuchsia">Fuchsia</option>
 					<option value="lightblue">Lightblue</option>
 					<option selected="" value="black">Black</option>
+					<option value="silver">Silver</option>
 					<option value="grey">Grey</option>
 					<option value="purple">Purple</option>
 					<option value="gold">Gold</option>
@@ -102,7 +103,8 @@ select
 					<option value="fuchsia">Fuchsia</option>
 					<option value="lightblue">Lightblue</option>
 					<option value="black">Black</option>
-					<option selected="" value="grey">Grey</option>
+					<option selected="" value="silver">Silver</option>
+					<option value="grey">Grey</option>
 					<option value="purple">Purple</option>
 					<option value="gold">Gold</option>
 					<option value="orange">Orange</option>
@@ -372,10 +374,9 @@ function changeMenuColors()
 	width.style.color = menuItemOptionColor;
 
 	width.style.border = "2px solid " + menuItemOptionBorderColor;
-
 }
 
-var speed = 0;
+var speed = 0.16;
 
 var flatTire = {
 x: 0,
@@ -386,17 +387,12 @@ endX: 0,
 endY: 0,
 radius: 0,
 movement: 0,
-
 draw: function(inX, inY, radius, height, size)
 {
 	// Clear clouds
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -446,10 +442,6 @@ draw: function(inX, inY, radius, height, size)
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -476,7 +468,7 @@ draw: function(inX, inY, radius, height, size)
 	// Tire
 	cx.beginPath();
 
-	cx.arc(this.x, this.y, radius * size + height * size * 0.9, 0, 7);
+	cx.arc(this.x, this.y, radius * size + height * size * 0.92, 0, 7);
 
 	cx.fillStyle = tireColor;
 	cx.fill();
@@ -485,11 +477,9 @@ draw: function(inX, inY, radius, height, size)
 
 	cx.strokeStyle = tireColor;
 
-	cx.lineWidth = Math.pow(radius, .7);
+	cx.lineWidth = (radius * size + height * size) * 2 * Math.PI / 40;
 
-	var i = 0;
-
-	var toothNumber = 40;
+	var toothNumber = 20;
 
 	var toothDistance = Math.PI * 2 / toothNumber;
 
@@ -497,7 +487,7 @@ draw: function(inX, inY, radius, height, size)
 
 	cx.beginPath();
 
-	for (i = 0; i < toothNumber; i++)
+	for (var i = 0; i < toothNumber; i++)
 	{
 		cx.moveTo(inX - Math.cos(myGradient) * radius * size * 0.1, inY + Math.sin(myGradient) * radius * size * 0.1);
 		cx.lineTo(inX - Math.cos(myGradient) * (radius * size + height * size), inY + Math.sin(myGradient) * (radius * size + height * size));
@@ -527,10 +517,6 @@ draw: function(inX, inY, radius, size)
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -585,15 +571,15 @@ drawStrings: function(inX, inY, radius, stringNumber, size)
 	// Wow, this function was written without even a single bug: 2017-5-4 02:59:20 PM IRDT
 	cx.beginPath();
 
-	var i = 0;
-
 	var stringNumber = radius / 2;
 
 	var stringDistance = Math.PI * 2 / stringNumber;
 
 	var myGradient = this.gradient;
 
-	for (i = 0; i < stringNumber; i++)
+	cx.lineWidth = 2 * size;
+
+	for (var i = 0; i < stringNumber; i++)
 	{
 		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
 		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
@@ -607,12 +593,8 @@ draw: function(inX, inY, radius, size)
 {
 	// Clear clouds
 	cx.fillStyle = "white";
-	cx.lineWidth = 2 * size;
+	cx.lineWidth = 2 * size + radius * size / 20;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -641,15 +623,10 @@ draw: function(inX, inY, radius, size)
 
 	// Wheel
 	cx.beginPath();
-	cx.arc(this.x, this.y, radius * size, 0, 7);
+	cx.arc(this.x, this.y, radius * size - radius * size / 40, 0, 7);
 
-	cx.fillStyle = "white";
 	cx.strokeStyle = wheelColor;
 	cx.fill();
-
-	cx.fillStyle = wheelColor;
-	cx.moveTo(inX - Math.cos(this.gradient) * radius * 0.1 * size, inY + Math.sin(this.gradient) * radius * 0.1 * size);
-	cx.lineTo(inX - Math.cos(this.gradient) * radius * size, inY + Math.sin(this.gradient) * radius * size);
 	cx.stroke();
 
 	this.drawStrings(inX, inY, radius, 30, size);
@@ -676,15 +653,14 @@ drawX: function(inX, inY, radius, size)
 
 	cx.beginPath();
 
-	var i = 0;
-
 	var stringDistance = Math.PI * 2 / 4;
 
 	var myGradient = this.gradient;
 
-	for (i = 0; i < 4; i++)
+	cx.lineWidth = radius / 2;
+
+	for (var i = 0; i < 4; i++)
 	{
-		cx.lineWidth = radius / 2;
 		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
 		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
 
@@ -697,12 +673,8 @@ draw: function(inX, inY, radius, size)
 {
 	// Clear clouds
 	cx.fillStyle = "white";
-	cx.lineWidth = 2 * size;
+	cx.lineWidth = 2 * size + radius * size / 20;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -731,7 +703,7 @@ draw: function(inX, inY, radius, size)
 
 	// Wheel
 	cx.beginPath();
-	cx.arc(this.x, this.y, radius * size, 0, 7);
+	cx.arc(this.x, this.y, radius * size - radius * size / 40, 0, 7);
 
 	cx.fillStyle = "white";
 	cx.strokeStyle = wheelColor;
@@ -766,15 +738,14 @@ drawY: function(inX, inY, radius, size)
 
 	cx.beginPath();
 
-	var i = 0;
-
 	var stringDistance = Math.PI * 2 / 3;
 
 	var myGradient = this.gradient;
 
-	for (i = 0; i < 3; i++)
+	cx.lineWidth = radius / 2;
+
+	for (var i = 0; i < 3; i++)
 	{
-		cx.lineWidth = radius / 2;
 		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
 		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
 
@@ -787,12 +758,8 @@ draw: function(inX, inY, radius, size)
 {
 	// Clear clouds
 	cx.fillStyle = "white";
-	cx.lineWidth = 2 * size;
+	cx.lineWidth = 2 * size + radius * size / 20;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -821,7 +788,7 @@ draw: function(inX, inY, radius, size)
 
 	// Wheel
 	cx.beginPath();
-	cx.arc(this.x, this.y, radius * size, 0, 7);
+	cx.arc(this.x, this.y, radius * size - radius * size / 40, 0, 7);
 
 	cx.fillStyle = "white";
 	cx.strokeStyle = wheelColor;
@@ -838,11 +805,11 @@ draw: function(inX, inY, radius, size)
 }
 }
 
-var initialized = false;
 var paceshift;
 var indicateMAXSpeed = 0;
+var initialized = false;
 
-var steeringWheel = {
+var racingSteeringWheel = {
 x: 0,
 y: 0,
 inXPrevious: 0,
@@ -854,92 +821,153 @@ movement: 0,
 haveTire: 1,
 gradient: 0,
 gradientStep: 0.1,
-drawX: function(inX, inY, radius, size)
+
+
+speedButtonX: 0,
+speedButtonY: 0,
+speedButtonWidth: 0,
+speedButtonHeight: 0,
+
+speedButtonTextX: 0,
+speedButtonTextY: 0,
+
+brakeButtonX: 0,
+brakeButtonY: 0,
+brakeButtonWidth: 0,
+brakeButtonHeight: 0,
+
+brakeButtonTextX: 0,
+brakeButtonTextY: 0,
+
+paceshifter: function(event)
 {
-	cx.beginPath();
+	var rect = cx.canvas.getBoundingClientRect();
 
-	cx.font = radius * size * 0.15 + "px Verdana";
+	clickX = event.clientX - rect.left;
+	clickY = event.clientY - rect.top;
 
-	cx.fillStyle = "darkred";
-	cx.fillRect(inX + radius * size * 0.25, inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
-
-	cx.fillStyle = "white";
-	cx.fillText("Speed", inX + radius * size * 0.25, inY + radius * size * 0.1);
-
-	cx.fillStyle = "darkred";
-	cx.fillRect(inX - (radius * size * 0.25) * 3, inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
-
-	cx.fillStyle = "white";
-	cx.fillText("Brake", inX - (radius * size * 0.25) * 3, inY + radius * size * 0.1);
-
-	var i = 0;
-
-	var stringDistance = Math.PI * 2 / 4;
-
-	var myGradient = this.gradient - Math.PI * 0.25;
-
-	for (i = 0; i < 4; i++)
+	if (clickX > this.speedButtonX && clickX < this.speedButtonX + this.speedButtonWidth && clickY > this.speedButtonY && clickY < this.speedButtonY + this.speedButtonHeight)
 	{
-		cx.lineWidth = radius / 4 * size;
-		cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
-		cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+		if (speed < 6)
+		{
+			speed += (Math.pow(6, 1.02) - speed) / 60;
+		}
+		else
+		{
+			indicateMAXSpeed = 500;
 
-		myGradient += stringDistance;
+			clearInterval(paceshift);
+		}
 	}
+	else if (clickX > this.brakeButtonX && clickX < this.brakeButtonX + this.brakeButtonWidth && clickY > this.brakeButtonY && clickY < this.brakeButtonY + this.brakeButtonHeight)
+	{
+		if (speed > 0.4)
+		{
+			speed -= (Math.pow(6, 1.02) - speed) / 20;
+		}
+		else
+		{
+			speed = 0;
+
+			clearInterval(paceshift);
+		}
+	}
+	else
+	{
+		clearInterval(paceshift);
+	}
+},
+drawInstruments: function(inX, inY, radius, size)
+{
+	// Wheel
+	cx.beginPath();
+	cx.strokeStyle = "black";
+
+	var myGradient = 0;
+	cx.lineWidth = radius / 2 * size;
+
+	cx.moveTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+	cx.lineTo(inX + Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
 
 	cx.stroke();
 
-	if (!initialized)
+	myGradient = Math.PI / 2 * 3;
+	cx.lineWidth = radius / 2.5 * size;
+
+	cx.moveTo(inX - Math.cos(myGradient) * radius * size, inY - Math.sin(myGradient) * radius * 0.1 * size);
+	cx.lineTo(inX + Math.cos(myGradient) * radius * size, inY - Math.sin(myGradient) * radius * size - radius / 4 * size / 2);
+
+	cx.font = radius * size * 0.15 + "px Verdana";
+
+	cx.stroke();
+	cx.beginPath();
+
+	// Speed button
+	this.speedButtonX = inX + radius * size * 0.25;
+	this.speedButtonY = inY - radius * size * 0.1;
+	this.speedButtonWidth = radius * size * 0.5;
+	this.speedButtonHeight = radius * size * 0.25;
+
+	this.speedButtonTextX = this.speedButtonX;
+	this.speedButtonTextY = inY + radius * size * 0.1;
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(this.speedButtonX, this.speedButtonY, this.speedButtonWidth, this.speedButtonHeight);
+
+	cx.fillStyle = "white";
+	cx.fillText("Speed", this.speedButtonTextX, this.speedButtonTextY);
+
+	// Brake button
+	this.brakeButtonX = inX - (radius * size * 0.25) * 3;
+	this.brakeButtonY = inY - radius * size * 0.1;
+	this.brakeButtonWidth = radius * size * 0.5;
+	this.brakeButtonHeight = radius * size * 0.25;
+
+	this.brakeButtonTextX = this.brakeButtonX;
+	this.brakeButtonTextY = inY + radius * size * 0.1;
+
+	cx.fillStyle = "darkred";
+	cx.fillRect(this.brakeButtonX, this.brakeButtonY, this.brakeButtonWidth, this.brakeButtonHeight);
+
+	cx.fillStyle = "white";
+	cx.fillText("Brake", this.brakeButtonTextX, this.brakeButtonTextY);
+
+	// Speedometer
+	var myGradient = 0;
+	cx.beginPath();
+
+	cx.lineWidth = radius / 11 * size;
+
+	var lightPosition = 0.7;
+
+	cx.strokeStyle = "darkred";
+
+//	cx.moveTo(inX - Math.cos(myGradient) * radius * lightPosition * 1.04 * size, inY - 14 + Math.sin(myGradient) * radius * 0.1 * size);
+//	cx.lineTo(inX + Math.cos(myGradient) * radius * lightPosition * 1.04 * size, inY - 14 + Math.sin(myGradient) * radius * 0.1 * size);
+
+	cx.stroke();
+
+	var maxSpeed = 6;
+
+	var lights = 30;
+
+	var speedPerLight = maxSpeed / lights;
+
+	cx.lineWidth = radius / 100 * size * 2;
+
+	var lightPosition = 0.7;
+
+	for (var i = 0; i < lights; i++)
 	{
-		initialized = true;
+		cx.beginPath();
+		cx.strokeStyle = speed > speedPerLight * i? "lightgreen" : "red";
 
-		cx.canvas.addEventListener("mousedown", function(event)
-		{
-			clearInterval(paceshift);
+		cx.moveTo(inX - Math.cos(myGradient) * radius * lightPosition * size, inY - 7.5 * size + Math.sin(myGradient) * radius * 0.1 * size);
+		cx.lineTo(inX - Math.cos(myGradient) * radius * lightPosition * size, inY - 10.625 * size + Math.sin(myGradient) * radius * size);
 
-			var rect = this.getBoundingClientRect();
-
-			paceshift = setInterval(function()
-			{
-				clickX = event.clientX - rect.left;
-				clickY = event.clientY - rect.top;
-
-				if ((clickX > inX + radius * size * 0.25 && clickX < inX + radius * size * 0.25 + radius * size * 0.5 && (clickY > inY - radius * size * 0.1) && clickY < inY - radius * size * 0.1 + radius * size * 0.25))
-				{
-					if (speed < 6)
-					{
-						speed += (Math.pow(6, 1.02) - speed) / 60;
-					}
-					else
-					{
-						indicateMAXSpeed = 500;
-
-						clearInterval(paceshift);
-					}
-				}
-
-				if ((clickX > inX - (radius * size * 0.25) * 3 && clickX <inX - (radius * size * 0.25) * 3 + radius * size * 0.5 && (clickY > inY - radius * size * 0.1) && clickY < inY - radius * size * 0.1 + radius * size * 0.25))
-				{
-					if (speed > 0.4)
-					{
-						speed -= (Math.pow(6, 1.02) - speed) / 20;
-					}
-					else
-					{
-						speed = 0;
-
-						clearInterval(paceshift);
-					}
-				}
-			}, 40);
-		});
-
-		cx.canvas.addEventListener("mouseup", function()
-		{
-			clearInterval(paceshift);
-		});
+		lightPosition -= 0.7 / ((lights - 1) / 2);
+		cx.stroke();
 	}
-
 },
 draw: function(inX, inY, radius, size)
 {
@@ -947,10 +975,6 @@ draw: function(inX, inY, radius, size)
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
 	this.endX = radius * 2 * size;
 	this.endY = radius * 2 * size;
 
@@ -972,7 +996,7 @@ draw: function(inX, inY, radius, size)
 	{
 		this.inXPrevious = inX;
 		this.inYPrevious = inY;
-	
+
 		this.x = inX;
 		this.y = inY;
 	}
@@ -987,7 +1011,22 @@ draw: function(inX, inY, radius, size)
 
 	cx.stroke();
 
-	this.drawX(inX, inY, radius, size);
+
+	cx.fillStyle = "white";
+	cx.strokeStyle = "black";
+
+	// Wheel
+	cx.lineWidth = radius / 3.2 * size;
+
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, Math.PI * 0.8, Math.PI * 1.2);
+	cx.stroke();
+
+	cx.beginPath();
+	cx.arc(this.x, this.y, radius * size, Math.PI * 1.8, Math.PI * 2.2);
+	cx.stroke();
+
+	this.drawInstruments(inX, inY, radius, size);
 
 //	this.gradient += this.gradientStep;
 }
@@ -1002,39 +1041,60 @@ endX: 0,
 endY: 0,
 radius: 0,
 movement: 0,
-haveTire: 1,
 gradient: 0,
 gradientStep: 0.1,
 drawX: function(inX, inY, radius, size)
 {
 	cx.beginPath();
 
-	cx.font = radius * size * 0.1 + "px Verdana";
+	cx.font = radius * size * 0.12 + "px Verdana";
 
 	cx.fillStyle = "darkred";
-	cx.fillRect(inX - (radius * size * 0.8), inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
+	cx.fillRect(inX - (radius * size * 0.35), inY - radius * size * 0.52, radius * size * 0.7, radius * size * 0.25);
 
 	cx.fillStyle = "white";
-	cx.fillText("100 KM/H", inX - (radius * size * 0.8), inY + radius * size * 0.1);
+	cx.fillText(Math.floor(speed * 64), inX - (radius * size * 0.30), inY - radius * size * 0.35);
 
-	cx.fillStyle = "darkred";
-	cx.fillRect(inX - (radius * size * 0.25), inY - radius * size * 0.75, radius * size * 0.5, radius * size * 0.25);
+	cx.fillText(" KM/H", inX - (radius * size * 0.10), inY - radius * size * 0.35);
 
-	cx.fillStyle = "white";
-	cx.fillText("200 KM/H", inX - (radius * size * 0.25), inY - radius * size * 0.55);
+	cx.beginPath();
 
-	cx.fillStyle = "darkred";
-	cx.fillRect(inX + (radius * size * 0.3), inY - radius * size * 0.1, radius * size * 0.5, radius * size * 0.25);
+	var markNumber = radius / 2;
 
-	cx.fillStyle = "white";
-	cx.fillText("300 KM/H", inX + (radius * size * 0.3), inY + radius * size * 0.1);
+	var remainder = markNumber % 4;
 
-	cx.lineWidth = radius / 5;
+	markNumber = remainder? markNumber - remainder : markNumber;
 
-	var myGradient = (Math.PI / 2) - speed;
+	var markDistance = Math.PI * 2 / markNumber;
 
-	cx.moveTo(inX - Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
-	cx.lineTo(inX - Math.cos(myGradient) * radius * size, inY + Math.sin(myGradient) * radius * size);
+	var myGradient = 0;
+
+	for (var i = 0; i < markNumber; i++)
+	{
+		cx.beginPath();
+
+		cx.lineWidth = i % (markNumber / 4)? radius * size / 50 : radius * size / 15;
+
+		cx.moveTo(inX - Math.cos(myGradient) * radius * size * 0.75, inY + Math.sin(myGradient) * radius * size * 0.75);
+		cx.lineTo(inX - Math.cos(myGradient) * radius * size * 0.9, inY + Math.sin(myGradient) * radius * size * 0.9);
+
+		myGradient += markDistance;
+
+		cx.stroke();
+	}
+
+	cx.beginPath();
+
+	cx.lineWidth = radius * size / 20;
+
+	var maxSpeed = 6;
+
+	var maxMark = maxSpeed * 1.05;
+
+	var myGradient = Math.PI * 0.5 + (Math.PI * 2 / maxMark * speed);
+
+	cx.moveTo(inX + Math.cos(myGradient) * radius * 0.1 * size, inY + Math.sin(myGradient) * radius * 0.1 * size);
+	cx.lineTo(inX + Math.cos(myGradient) * radius * size * 0.8, inY + Math.sin(myGradient) * radius * size * 0.8);
 
 	cx.stroke();
 },
@@ -1044,17 +1104,13 @@ draw: function(inX, inY, radius, size)
 	cx.fillStyle = "white";
 	cx.lineWidth = 2 * size;
 
-	// X: Rotor
-	// Y: Rotor
-	// endX: Empiric
-	// endY: Empiric
-	this.endX = radius * 2 * size;
-	this.endY = radius * 2 * size;
+	this.endX = radius * 2 * size + cx.lineWidth;
+	this.endY = radius * 2 * size + cx.lineWidth;
 
 //	if (!this.haveTire)
 	{
-		cx.fillRect(	inX - radius * size,
-				inY - radius * size,
+		cx.fillRect(	inX - radius * size - cx.lineWidth / 2,
+				inY - radius * size - cx.lineWidth / 2,
 				this.endX,
 				this.endY);
 	}
@@ -1076,7 +1132,7 @@ draw: function(inX, inY, radius, size)
 
 	// Wheel
 	cx.beginPath();
-	cx.lineWidth = radius / 4 * size;
+	cx.lineWidth = radius * size / 20;
 	cx.arc(this.x, this.y, radius * size, 0, 7);
 
 	cx.fillStyle = "white";
@@ -1091,7 +1147,20 @@ draw: function(inX, inY, radius, size)
 }
 
 var groundPatrol;
-var spin = false;
+
+function maxSpeedMessage()
+{
+	cx.fillStyle = "darkred";
+
+	cx.font = 70 + "px Verdana";
+
+	if (indicateMAXSpeed % 2)
+	{
+		cx.fillText("MAX SPEED REACHED!", 30, 300);
+	}
+
+	indicateMAXSpeed -= 1;
+}
 
 function invent(x, y, wheelRadius, tireHeight, wheelType, tireType)
 {
@@ -1112,9 +1181,9 @@ function invent(x, y, wheelRadius, tireHeight, wheelType, tireType)
 	// Might already be set
 	clearInterval(groundPatrol);
 
-	var mySteeringWheel = Object.create(steeringWheel);
+	var myRacingSteeringWheel = Object.create(racingSteeringWheel);
 
-	mySteeringWheel.draw(850, 520, 50, 1.6);
+	myRacingSteeringWheel.draw(850, 520, 50, 1.6);
 
 	var mySpeedometer = Object.create(speedometer);
 
@@ -1127,70 +1196,65 @@ function invent(x, y, wheelRadius, tireHeight, wheelType, tireType)
 	switch (wheelType)
 	{
 		case "Sheet":
-		var myWheel = Object.create(sheetWheel);
-		break;
+			myWheel = Object.create(sheetWheel);
+			break;
 		case "Strings":
-		var myWheel = Object.create(stringWheel);
-		break;
+			myWheel = Object.create(stringWheel);
+			break;
 		case "X":
-		myWheel = Object.create(xWheel);
-		break;	
+			myWheel = Object.create(xWheel);
+			break;	
 		case "Y":
-		myWheel = Object.create(yWheel);
-		break;
+			myWheel = Object.create(yWheel);
+			break;
 	}
 
 	switch (tireType)
 	{
 		case "Flat":
-		var myTire = Object.create(flatTire);
-		break;
+			myTire = Object.create(flatTire);
+			break;
 		case "Offroad":
-		var myTire = Object.create(offroadTire);
-		break;
+			myTire = Object.create(offroadTire);
+			break;
 	}
 
 	myTire.draw(x, y, wheelRadius, tireHeight, 1.6);
 
 	myWheel.draw(x, y, wheelRadius, 1.6);
 
-	spin = true;
-
-	if (spin)
+	if (!initialized)
 	{
-		// Patroling
-		groundPatrol = setInterval(function()
+		initialized = true;
+
+		cx.canvas.addEventListener("mousedown", function(event) {myEvent = event; clearInterval(paceshift); paceshift = setInterval(function() { myRacingSteeringWheel.paceshifter(this.myEvent); }, 40);
+});
+
+		cx.canvas.addEventListener("mouseup", function() { clearInterval(paceshift); });
+	}
+
+	// Patroling
+	groundPatrol = setInterval(function()
+	{
+		cx.fillStyle = "white";
+		cx.fillRect(0, 0, myCanvasX, myCanvasY);
+
+		if (indicateMAXSpeed)
 		{
-			cx.fillStyle = "white";
-			cx.fillRect(0, 0, myCanvasX, myCanvasY);
+			maxSpeedMessage();
+		}
+		else
+		{
+			myTire.draw(x, y, wheelRadius, tireHeight, 1.6);
 
-			if (indicateMAXSpeed)
-			{
-				cx.fillStyle = "darkred";
+			myWheel.draw(x, y, wheelRadius, 1.6);
 
-				cx.font = 70 + "px Verdana";
+			mySpeedometer.draw(100, 520, 50, 1.6);
 
-				if (indicateMAXSpeed % 2) { cx.fillText("MAX SPEED REACHED!", 30, 300); };
+			myRacingSteeringWheel.draw(850, 520, 50, 1.6);
+		}
 
-				indicateMAXSpeed -= 1;
-			}
-			else
-			{
-				myTire.draw(x, y, wheelRadius, tireHeight, 1.6);
-
-				myWheel.draw(x, y, wheelRadius, 1.6);
-
-				mySpeedometer.draw(100, 520, 50, 1.6);
-
-				mySteeringWheel.draw(850, 520, 50, 1.6);
-			}
-
-		}, 10);
-	}
-	else
-	{
-		clearInterval(groundPatrol);
-	}
+	}, 10);
 }
 
 
